@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+
+import NavBar from './components/Navbar';
+import { DisplayNew } from './components/news_display';
+import { DisplayFilter } from './components/news_filter';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+			<div className="App" >
+				<NavBar/>
+				<div className='flex flex-col items-center w-full p-5'> 
+					<DisplayFilter></DisplayFilter>
+					<DisplayNew></DisplayNew>
+				</div>
+			</div>
+	);
 }
 
 export default App;
