@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { NewsProvider } from './components/news_context';
+import { NewsProvider } from './context/news_context';
+import { selectedArticleProvider } from './context/selected_article_context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+
 		<NewsProvider>
-      <App />
+      <selectedArticleProvider>
+        <App />
+      </selectedArticleProvider>
     </NewsProvider>
   </React.StrictMode>
 );

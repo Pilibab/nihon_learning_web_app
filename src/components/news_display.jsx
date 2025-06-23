@@ -1,11 +1,15 @@
 import { useContext } from "react";
-import { NewsContext } from "./news_context";
+import { NewsContext } from "../context/news_context";
+import {SelectedArticleContext} from "../context/selected_article_context"
+import { titleStyle } from "../utilities/styles";
 import image from "../assets/no_image.jpg"
+
 
 export const DisplayNew = () => {
     const {articles} = useContext(NewsContext);
     const altImage = image
 
+    const {setSelectedArticleIndex} = useContext(SelectedArticleContext)
     // Styles for article box 
     const articleboxStyle = "flex space-x-4 p-4 rounded-lg shadow-md" + 
     " bg-white border border-gray-200" +
@@ -23,23 +27,26 @@ export const DisplayNew = () => {
     }
     return (
         <div className="flex flex-col space-y-4 w-[calc(100%-100px)]">
-            {articles.map((article, index) =>(
+            {articles.map((article, index) => (
                 <a key={article.url} 
                     className={`${articleboxStyle}`}
                     href={article.url} // for now, TODO: take link to display the content of the article 
                     target="_blank"
                     rel="noopener noreferrer"
-                    > 
+                    onClick={(e) => {
+                        e.preventDefault()
+                        setSelectedArticleIndex(index)
+                        }}> 
 
                     <img className="w-[150px] h-[100px] object-cover rounded " 
                     onError={(e)=>{ 
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = altImage}}
                     src={article.urlToImage || altImage} 
+                    alt="Failed to load"
                     />
                     <div className="flex flex-col justify-between">
-                        <p className="text-lg font-semibold text-gray-900
-                            dark:text-white mb-1">{article.title}</p>
+                        <p className={`${titleStyle} + text-lg`}>{article.title}</p>
 
                         <div className="flex flex-col space-y-2">            
                             <p className={infoStyle}>

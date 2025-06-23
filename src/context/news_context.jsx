@@ -1,5 +1,5 @@
 import { NEWS_API_URL } from '../api';
-import { useEffect,useState, createContext } from 'react';
+import { createContext, useEffect,useState } from 'react';
 import {fetchArticles} from '../utilities/handle_api';
 
 export const NewsContext = createContext()

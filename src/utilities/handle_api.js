@@ -3,7 +3,7 @@
 // handle_api.js
 // components > 
 export const fetchArticles = async (news_api) => {
-    console.log("The NEWSAPI_URL is:", news_api);
+    // console.log("The NEWSAPI_URL is:", news_api);
     try {
         const response = await fetch(news_api);
         if (!response.ok){
