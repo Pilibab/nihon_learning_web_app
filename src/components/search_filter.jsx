@@ -1,9 +1,14 @@
-import { Button } from "bootstrap";
-import { useState } from "react";
-
+import { useState, useContext } from "react";
+import { filterContext } from "../context/filter_context";
 
 function FilterDropdown() {
-    const [toggleFilter, setToggleFilter] = useState(false)
+
+    // Get context 
+    const { timeline, setTimeline, sortBy, setSortBy} = useContext(filterContext);
+
+    const [toggleFilter, setToggleFilter] = useState(false);
+    const [uploadValue, setUploadValue] = useState(timeline);
+    const [selectedSortby, setSelectedSortby] = useState(sortBy);
 
     // Style for the button that opens the filter
     const filterButtonStyle = "px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200";
@@ -25,7 +30,44 @@ function FilterDropdown() {
         border border-gray-400 shadow-xl relative
         transition-transform duration-300 transform scale-95 sm:scale-100
         `;
+    // Base styles for each button/label
+    const baseItemStyle = "px-4 py-2 rounded-md cursor-pointer text-sm font-medium " +
+                        "transition-colors duration-200 ease-in-out " +
+                        "hover:bg-gray-100 dark:hover:bg-gray-700";
 
+    // Styles for the selected item
+    const selectedItemStyle = "bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-700 dark:border-indigo-700 " +
+                            "hover:bg-indigo-700 dark:hover:bg-indigo-800";
+
+    // Styles for unselected items
+    const unselectedItemStyle = "bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-300";
+
+    const filterOptionSeparator = "mb-5 pb-[5px] border-b-[3px]"
+
+    const dateRangeOptions = [
+        { label: 'Today', value: 0 }, // 0 days ago
+        { label: 'Last 7 Days', value: 7 },
+        { label: 'Last 30 Days', value: 30 },
+        { label: 'Last 3 Months', value: 90 },
+        { label: 'Last Year', value: 365 },
+        { label: 'All Time', value: 'all' }, // Special value for no date filtering
+    ];
+
+    const sortByRangeOption = [
+        {label: 'relevancy', value:'relevancy'},
+        {label: 'popularity', value:'popularity'},
+        {label: 'published', value: 'publishedAt'}
+    ]
+
+    // handles the logic for toggling and passing to filter context 
+    const handleSortBy = (value) => {
+        setTimeline(value)
+        setSelectedSortby(value)
+    }
+    const handleUploadTime = (value) => {
+        setSortBy(value)
+        setUploadValue(value)
+    }
     return (
         <>
             <button 
@@ -39,17 +81,44 @@ function FilterDropdown() {
                     <div className={filterContainerStyle}>
                         <button 
                             onClick={()=> setToggleFilter(!toggleFilter)}
-                            className={closeButtonStyle}
-                        >
+                            className={closeButtonStyle}>
                             &times;
                         </button>
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                             Advanced Filters
                         </h2>
-                        <p className="text-gray-700 dark:text-gray-300">
-                            {/* Placeholder for actual filter options */}
-                            This is where your dynamic filter options (like country, category, language, date range, etc.) will be placed.
-                        </p>
+                        <div className="flex flex-row justify-evenly">
+                            <div>
+                                <p className={filterOptionSeparator} >Upload date</p>
+                                {
+                                    dateRangeOptions.map((option) => {
+                                        return (
+                                            <div 
+                                            key={option.value}
+                                            onClick={() => setUploadValue(option.value)}
+                                            className={`${baseItemStyle} ${uploadValue === option.value? selectedItemStyle: unselectedItemStyle}`}>
+                                                {option.label}
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div>
+                                <p className={filterOptionSeparator} >Sort by</p>
+                                {
+                                    sortByRangeOption.map((option) => {
+                                        return (
+                                            <div
+                                            key={option.value}
+                                            onClick={() => handleSortBy(option.value)}
+                                            className={`${baseItemStyle} ${selectedSortby === option.value? selectedItemStyle: unselectedItemStyle}`}>
+                                                {option.label}
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             }

@@ -14,7 +14,6 @@ export const NewsDisplayManager = () => {
         <>
             {selectedArticle !== null? (
                 <DisplayArticle/>
-                // null
             ) : (
                 <>
                     <DisplayFilter/>
