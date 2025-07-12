@@ -1,3 +1,4 @@
+// article_display.jsx
 import { useContext } from "react"
 import { SelectedArticleContext } from "../context/selected_article_context"
 import image from "../assets/no_image.jpg"
@@ -6,7 +7,7 @@ import { titleStyle } from "../utilities/styles"
 export const DisplayArticle = () => {
     const altImage = image
     const {selectedArticle, clearIndex} = useContext(SelectedArticleContext)
-    const articleBoxStyle = "flex flex-col items-center space-x-4 p-4 rounded-lg shadow-md bg-white border border-gray-200" + " w-[calc(100%-100px)]"
+    const articleBoxStyle = "flex flex-col items-center space-x-4 p-4 rounded-lg shadow-md bg-white border border-gray-200 w-[calc(100%-100px)]";
     const textLabelStyle = "text-xs text-gray-600 select-text"
 
     // Helper function to format time ago
@@ -50,7 +51,7 @@ export const DisplayArticle = () => {
                 selectedArticle.urlToImage && (
                     <img
                     className="h-64 object-cover rounded mb-4"
-                    src={selectedArticle.urlToImage}
+                    src={selectedArticle.urlToImage || altImage}
                     alt={selectedArticle.title}
                     onError={(e) => {
                         e.currentTarget.onerror = null; // Prevent infinite loop if altImage also fails

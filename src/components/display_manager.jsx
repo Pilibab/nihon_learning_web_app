@@ -1,3 +1,4 @@
+// display_manager.jsx
 import { useContext} from "react"
 import { SelectedArticleContext } from "../context/selected_article_context"
 import { DisplayNew } from "./news_display";
@@ -7,12 +8,13 @@ import { DisplayArticle } from "./article_display";
 
 export const NewsDisplayManager = () => {
     
-    const {selectedIndex} = useContext(SelectedArticleContext)
+    const {selectedArticle} = useContext(SelectedArticleContext)
     
     return (
         <>
-            {selectedIndex !== null? (
+            {selectedArticle !== null? (
                 <DisplayArticle/>
+                // null
             ) : (
                 <>
                     <DisplayFilter/>

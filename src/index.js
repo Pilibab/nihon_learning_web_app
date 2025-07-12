@@ -1,20 +1,23 @@
+// index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { NewsProvider } from './context/news_context';
-import { selectedArticleProvider } from './context/selected_article_context';
+import { SelectedArticleProvider } from './context/selected_article_context';
+import { FilterContextProvider } from './context/filter_context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-
+    <FilterContextProvider>
 		<NewsProvider>
-      <selectedArticleProvider>
-        <App />
-      </selectedArticleProvider>
+        <SelectedArticleProvider>
+          <App />
+        </SelectedArticleProvider>        
     </NewsProvider>
+    </FilterContextProvider>
   </React.StrictMode>
 );
 
