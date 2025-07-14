@@ -8,19 +8,25 @@ export const NewsContext = createContext()
 
 export const NewsProvider = ({children}) => {
     const [articles, setArticles] = useState([]);
-    const {selectedApi, selectEndpoints, qSearch} = useContext(filterContext)
-    
-    const param = {
-        q: qSearch,
-        endPoint: selectEndpoints
-    }
+    const {selectedApi, selectEndpoints, qSearch, triggerFetch, setFetchTrigger, timeline, sortBy} = useContext(filterContext)
 
     useEffect(() => {
+        const param = {
+                endPoint: selectEndpoints,        // "everything" or "top-headlines"
+                q: qSearch,
+                // sources,
+                // domains,
+                // excludeDomains,
+                sortBy,
+                // category,
+                // searchIn, 
+                timeline: timeline
+        }
         const newsApiUrl = buildUrl(selectedApi, param)
         
         console.log("log url: ", newsApiUrl);
         
-		fetchArticles(NEWS_API_URL)
+		fetchArticles(newsApiUrl)
         .then(data =>
             { 
                 if (data?.articles) 
@@ -34,7 +40,9 @@ export const NewsProvider = ({children}) => {
                 console.error("failed to fetch", err);
                 setArticles([])
             })
-	}, [selectedApi, selectEndpoints, qSearch]);
+        .finally(()=>setFetchTrigger(false))
+        
+	}, [triggerFetch]);
     return (
         <NewsContext.Provider value={{articles}}>
             {children}

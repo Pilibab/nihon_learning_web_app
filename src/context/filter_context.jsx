@@ -9,12 +9,12 @@ export const FilterContextProvider = ({children}) => {
     const [qSearch, setQSearch] = useState('japan');
     const [timeline, setTimeline] = useState(7); // from 1 day, week, month, year
     const [sortBy, setSortBy] = useState('publishedAt')
-    const [triggerFetch, setFetchLogic] = useState(false); // dependencies for useffect -> building url 
+    const [triggerFetch, setFetchTrigger] = useState(false); // dependencies for useffect -> building url 
 
     const valuePass = {selectEndpoints, setSelectedEndpoints, 
         selectedApi, setSelectedApi,
         qSearch, setQSearch,
-        triggerFetch, setFetchLogic, 
+        triggerFetch, setFetchTrigger, 
         timeline, setTimeline, 
         sortBy, setSortBy
     }

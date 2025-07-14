@@ -4,7 +4,7 @@ import { filterContext } from "../context/filter_context";
 function FilterDropdown() {
 
     // Get context 
-    const { timeline, setTimeline, sortBy, setSortBy} = useContext(filterContext);
+    const { timeline, setTimeline, sortBy, setSortBy, setFetchTrigger} = useContext(filterContext);
 
     const [toggleFilter, setToggleFilter] = useState(false);
     const [uploadValue, setUploadValue] = useState(timeline);
@@ -68,6 +68,8 @@ function FilterDropdown() {
         setSortBy(value)
         setUploadValue(value)
     }
+
+    
     return (
         <>
             <button 
@@ -80,7 +82,10 @@ function FilterDropdown() {
                 <div className={overlayStyle}>
                     <div className={filterContainerStyle}>
                         <button 
-                            onClick={()=> setToggleFilter(!toggleFilter)}
+                            onClick={()=> {
+                                setToggleFilter(!toggleFilter)
+                                setFetchTrigger(true)
+                            }}
                             className={closeButtonStyle}>
                             &times;
                         </button>
@@ -95,7 +100,7 @@ function FilterDropdown() {
                                         return (
                                             <div 
                                             key={option.value}
-                                            onClick={() => setUploadValue(option.value)}
+                                            onClick={() =>  handleUploadTime(option.value)}
                                             className={`${baseItemStyle} ${uploadValue === option.value? selectedItemStyle: unselectedItemStyle}`}>
                                                 {option.label}
                                             </div>

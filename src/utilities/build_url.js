@@ -28,7 +28,7 @@ const parsedParam = (q, searchIn) => {
 }
 
 export const buildUrl = (typeOfApi, param) => {
-    console.log("building");
+    console.log(`building, url selected ${typeOfApi}`);
     
     // EVERYTHING endpoint parameters (https://newsapi.org/v2/everything)
     /*
@@ -52,25 +52,25 @@ export const buildUrl = (typeOfApi, param) => {
     * q
     * 
     */
-    if (typeOfApi === "newsAPi")
+    if (typeOfApi === "newsapi")
     {
+        console.log(`building ${typeOfApi}` );
+        
         const {
             endPoint,        // "everything" or "top-headlines"
             q,
             sources,
             domains,
             excludeDomains,
-            from, // can be 1 week day 
-            to,
             sortBy,
             category,
             country = "jp",
             language = "jp", // default to jp
             pageSize = 100,
             page = 1,
-            searchIn
+            searchIn,
+            timeline
         } = param;
-
 
         const base = NEWS_API_BASE_URL;
         const key = NEWS_API_KEY_PART;
@@ -78,15 +78,14 @@ export const buildUrl = (typeOfApi, param) => {
         // Default to last 3 days if "from" is not given
         const today = new Date();
         const spanDays = new Date(today);
-        spanDays.setDate(today.getDate() - 7);
+        spanDays.setDate(today.getDate() - timeline);
 
-        const fromDate = from || spanDays.toISOString().split('T')[0];
-        const toDate = to || today.toISOString().split('T')[0];
+        const fromDate = spanDays.toISOString().split('T')[0];
+        const toDate = today.toISOString().split('T')[0];
 
         const {q: parsedQ, searchIn: parsedSearchIn} = parsedParam(q, searchIn)
-        const endpoint = endPoint === "everything"? "everything?": "top-headlines?"
 
-        if (endpoint === "everything?" ) {
+        if (endPoint === "everything" ) {
             // parameters for everything 
             const params = {
                 q: parsedQ,              // -> japan
@@ -95,7 +94,6 @@ export const buildUrl = (typeOfApi, param) => {
                 from: fromDate,
                 to: toDate,
                 sortBy,         // -> relevance
-                country,        // -> japan
                 language,       // -> japan
                 pageSize,
                 page,
@@ -108,10 +106,10 @@ export const buildUrl = (typeOfApi, param) => {
             // to use searchIn
             // ${q} searchin:(title,content,description) -> so q handles both q and searchin
             const queryString = new URLSearchParams(filteredParams).toString();
-            const url = `${base}${endpoint}${queryString}${key}`;
+            const url = `${base}${endPoint}?${queryString}${key}`;
 
             return url;
-        } else if ( endPoint === "top-headlines?") {
+        } else if ( endPoint === "top-headlines") {
             
         } else {
 
