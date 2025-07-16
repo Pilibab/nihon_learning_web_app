@@ -8,7 +8,7 @@ export const NewsContext = createContext()
 
 export const NewsProvider = ({children}) => {
     const [articles, setArticles] = useState([]);
-    const {selectedApi, selectEndpoints, qSearch, triggerFetch, setFetchTrigger, timeline, sortBy} = useContext(filterContext)
+    const {selectedApi, selectEndpoints, qSearch, triggerFetch, setFetchTrigger, timeline, sortBy, selectedCategory} = useContext(filterContext)
 
     useEffect(() => {
         const param = {
@@ -18,12 +18,12 @@ export const NewsProvider = ({children}) => {
                 // domains,
                 // excludeDomains,
                 sortBy,
-                // category,
+                category: selectedCategory,
                 // searchIn, 
                 timeline: timeline
         }
+        console.log("setting up url");
         const newsApiUrl = buildUrl(selectedApi, param)
-        
         console.log("log url: ", newsApiUrl);
         
 		fetchArticles(newsApiUrl)

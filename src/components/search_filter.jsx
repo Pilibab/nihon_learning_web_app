@@ -4,7 +4,7 @@ import { filterContext } from "../context/filter_context";
 function FilterDropdown() {
 
     // Get context 
-    const { timeline, setTimeline, sortBy, setSortBy, setFetchTrigger} = useContext(filterContext);
+    const { timeline, setTimeline, sortBy, setSortBy, setFetchTrigger, selectedCategory, setCategory, selectEndpoints, setSelectedEndpoints} = useContext(filterContext);
 
     const [toggleFilter, setToggleFilter] = useState(false);
     const [uploadValue, setUploadValue] = useState(timeline);
@@ -59,6 +59,18 @@ function FilterDropdown() {
         {label: 'published', value: 'publishedAt'}
     ]
 
+    const categoryRangeOption = [
+        {label: 'general', value: 'general'},
+        {label: 'business', value: 'business'},
+        {label: 'entertainment', value: 'entertainment'},        
+        {label: 'health', value: 'health'},        
+        {label: 'science', value: 'science'},
+        {label: 'sports', value: 'sports'},
+        {label: 'technology', value: 'technology'},
+
+
+    ]
+
     // handles the logic for toggling and passing to filter context 
     const handleSortBy = (value) => {
         setTimeline(value)
@@ -93,23 +105,44 @@ function FilterDropdown() {
                             Advanced Filters
                         </h2>
                         <div className="flex flex-row justify-evenly">
+                            {
+                                selectEndpoints === "everything" && ( 
+                                <>
+                                    <div>
+                                    <p className={filterOptionSeparator} >Upload date</p>
+                                    {
+                                        dateRangeOptions.map((option) => {
+                                            return (
+                                                <div 
+                                                key={option.value}
+                                                onClick={() =>  handleUploadTime(option.value)}
+                                                className={`${baseItemStyle} ${uploadValue === option.value? selectedItemStyle: unselectedItemStyle}`}>
+                                                    {option.label}
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    </div>
+                                    <div>
+                                        <p className={filterOptionSeparator} >Sort by</p>
+                                        {
+                                            sortByRangeOption.map((option) => {
+                                                return (
+                                                    <div
+                                                    key={option.value}
+                                                    onClick={() => handleSortBy(option.value)}
+                                                    className={`${baseItemStyle} ${selectedSortby === option.value? selectedItemStyle: unselectedItemStyle}`}>
+                                                        {option.label}
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </>
+                            )}
+                            { selectEndpoints === 'top-headline' && 
                             <div>
-                                <p className={filterOptionSeparator} >Upload date</p>
-                                {
-                                    dateRangeOptions.map((option) => {
-                                        return (
-                                            <div 
-                                            key={option.value}
-                                            onClick={() =>  handleUploadTime(option.value)}
-                                            className={`${baseItemStyle} ${uploadValue === option.value? selectedItemStyle: unselectedItemStyle}`}>
-                                                {option.label}
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                            <div>
-                                <p className={filterOptionSeparator} >Sort by</p>
+                                <p className={filterOptionSeparator} >category</p>
                                 {
                                     sortByRangeOption.map((option) => {
                                         return (
@@ -122,7 +155,7 @@ function FilterDropdown() {
                                         )
                                     })
                                 }
-                            </div>
+                            </div>}
                         </div>
                     </div>
                 </div>
@@ -132,3 +165,7 @@ function FilterDropdown() {
 }
 
 export default FilterDropdown;
+
+// const buildOption = (option, functionUpdate) => {
+//     return 
+// } 

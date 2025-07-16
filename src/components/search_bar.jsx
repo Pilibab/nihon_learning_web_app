@@ -23,7 +23,7 @@ export const SearchBar = () => {
     return (
         <div className={wrapperStyle}>
             {/* Search Bar */}
-            {selectedApi === "newsapi" && selectEndpoints === "everything" && (
+            {selectedApi === "newsapi" && (
                 <div>
                     <div className="flex flex-row items-center">
                         <input

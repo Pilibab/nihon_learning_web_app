@@ -100,9 +100,7 @@ export const buildUrl = (typeOfApi, param) => {
                 searchIn: parsedSearchIn
             };
                 // `https://newsapi.org/v2/everything?q=japan&language=jp&sortBy=relevancy&apiKey=${process.env.REACT_APP_NEWSAPI_KEY}`
-            const filteredParams = Object.entries(params)
-                .filter(([_, v]) => v !== undefined && v !== null)
-                .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
+            const filteredParams = paramsToUrl(params)
             // to use searchIn
             // ${q} searchin:(title,content,description) -> so q handles both q and searchin
             const queryString = new URLSearchParams(filteredParams).toString();
@@ -110,9 +108,28 @@ export const buildUrl = (typeOfApi, param) => {
 
             return url;
         } else if ( endPoint === "top-headlines") {
-            
-        } else {
+            const params = {
+                country,
+                category,
+                q: parsedQ,
+                pageSize,
+                page,
+            }
 
+            const filteredParams = paramsToUrl(params)
+            const queryString = new URLSearchParams(filteredParams).toString();
+            console.log(queryString);
+            
+            const url = `${base}${endPoint}?${queryString}${key}`;
+
+            return url;
+        } else {
         }
     }
+}
+
+const paramsToUrl = (params) => {
+    return Object.entries(params)
+                .filter(([_, v]) => v !== undefined && v !== null)
+                .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
 }
